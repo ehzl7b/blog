@@ -1,7 +1,4 @@
 [
-  {
-    "title": "Dev Note",
-    "id": "dev",
-    "order": "desc"
-  }
+  {"title": "Dev Note", "id": "dev", "order": "desc"},
+  {"title": "MS Office Tips", "id": "msoffice", "order": "asc"}
 ]
