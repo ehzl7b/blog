@@ -1,0 +1,20 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "개인 블로그(https://ehzl7b.github.io)에 올려지는 포스팅들을 기록한 Repo다.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "fast-glob": "^3.3.2",
+    "fs-extra": "^11.2.0",
+    "gray-matter": "^4.0.3",
+    "highlight.js": "^11.10.0",
+    "markdown-it": "^14.1.0"
+  }
+}
