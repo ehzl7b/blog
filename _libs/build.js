@@ -1,7 +1,7 @@
 import fs from "fs-extra";
 import fg from "fast-glob";
-import path from "path";
 import render from "./render.js";
+import path from "path";
 
 /**
  * 아래 규칙에 따라 마크다운 형식의 포스팅 페이지 렌더링
@@ -12,7 +12,8 @@ import render from "./render.js";
  * nav.json 파일을 읽어서 네비게이션 페이지 렌더링
  */
 
-const root = process.env.PWD;
+// const root = fg.convertPathToPattern(process.env.PWD || process.cwd());
+const root = ".";
 
 export default function build() {
     let renderedCount = 0;
@@ -23,6 +24,8 @@ export default function build() {
 
     // dist에서 src에 없는 파일들을 삭제
     for (let X of files_dist) {
+        const d = path.parse(x).name;
+        // const s =  
         if (!files_src.includes(x.slice(0, -4) + "md")) {
             try {
                 fs.removeSync(x);
@@ -36,10 +39,11 @@ export default function build() {
 
     // src에서 dist에 없는 파일들을 렌더링
     for (let x of files_src) {
-        if (!files_dist.includes(x.slice(0, -2) + "html")) {
-            let html = render(file);
+        const y = (x.slice(0, -2) + "html").replace(`${root}/src`, `${root}/dist`);
+        if (!files_dist.includes(y)) {
+            let html = render(x);
             try {
-                fs.outputFileSync(file, html);
+                fs.outputFileSync(y, html);
             } catch (e) {
                 console.log(`파일 생성 에러: ${e.message}`);
                 process.exit(1);
@@ -48,18 +52,18 @@ export default function build() {
         }
     }
 
-    // 네비게이션 페이지 렌더링
-    const navfile = fg.globSync(`${root}/src/**/nav.json`);
-    const navobj = (() => {
-        try {
-            return JSON.parse(fs.readFileSync(navfile[0], "utf-8"));
-        } catch (e) {
-            console.log(`파일 로드 에러: ${e.message}`);
-            process.exit(1);
-        }
-    })();
-    for (let x of navobj) {
-        let file = `${root}/dist/${x.id}.html`;
-        let postings = fg.globSync(`${root}/dist/${x.id}/**/*.html`);
-    }
+    // // 네비게이션 페이지 렌더링
+    // const navfile = fg.globSync(`${root}/src/**/nav.json`);
+    // const navobj = (() => {
+    //     try {
+    //         return JSON.parse(fs.readFileSync(navfile[0], "utf-8"));
+    //     } catch (e) {
+    //         console.log(`파일 로드 에러: ${e.message}`);
+    //         process.exit(1);
+    //     }
+    // })();
+    // for (let x of navobj) {
+    //     let file = `${root}/dist/${x.id}.html`;
+    //     let postings = fg.globSync(`${root}/dist/${x.id}/**/*.html`);
+    // }
 }
